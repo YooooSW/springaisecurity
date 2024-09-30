@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head"></head>
 
 <body class="sub_page">
@@ -14,9 +14,14 @@
   <div class="container">
     <h2 class="mb-4">Post List</h2>
     <div th:each="post : ${posts}">
-           <h5 th:text="${post.title}">Title</h5>
-           <p th:text="${post.body}">Body</p>
-          <hr/>
+            <h5 th:text="${post.title}">Title</h5>
+            <p th:text="${post.body}">Body</p>
+            <form th:action="@{/posts/delete/{id}(id=${post.id})}" method="post">
+            <span sec:authorize="isAuthenticated()">
+                <button th:if="{#authorization.principal.account.id == post.account.id}" class="btn btn-sm btn-danger">삭제</button>
+            </span>
+            </form>
+        <hr/>
     </div>
   </div>
 </section>
